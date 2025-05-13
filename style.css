@@ -1,0 +1,337 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+#background {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(
+    45deg,
+    #ffdde8 0%,
+    #ffc9d9 25%,
+    #ffb5cb 50%,
+    #ffa1bd 75%,
+    #ff94b2 100%
+  );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+}
+.container {
+  width: 100%;
+  height: 100%;
+  background-color: #d9d9d9;
+  border-radius: 50px;
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.3);
+}
+.container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.4fr 0.6fr 2fr;
+  grid-template-areas:
+    "Header"
+    "Date"
+    "MyTask";
+}
+
+.Header {
+  grid-area: Header;
+  background-color: #fff;
+  height: 100%;
+  width: 100%;
+  border-top-right-radius: 50px;
+  border-top-left-radius: 50px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.logo img {
+  width: 50px;
+  height: 50px;
+  border-radius: 22px;
+}
+.search-box {
+  background-color: #ffe5e5;
+  border-radius: 25px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  width: 900px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  background: transparent;
+  flex: 1;
+  padding-left: 10px;
+  font-size: 16px;
+}
+.search-box img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+.Notification img {
+  width: 30px;
+  height: 30px;
+}
+.Date {
+  grid-area: Date;
+  border-radius: 50px;
+  background-color: #fff;
+  margin: 18px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.day-button {
+  width: 48px;
+  height: 70px;
+  background-color: #6c7a96;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-family: sans-serif;
+  color: white;
+}
+
+.day-label {
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.day-number {
+  width: 32px;
+  height: 32px;
+  background-color: #ffece5;
+  color: black;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+.MyTask {
+  grid-area: MyTask;
+  background-color: #fff;
+  margin: 0px 20px 20px 20px;
+  border-radius: 50px;
+  padding: 20px;
+}
+.MyTask {
+  display: grid;
+  grid-template-columns: 1.5fr 0.5fr;
+  grid-template-rows: 0.5fr 2fr 0.5fr;
+  gap: 0px 20px;
+  grid-template-areas:
+    "title note"
+    "tasklist note"
+    "Addbutton note";
+}
+
+.title {
+  grid-area: title;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  color: #5c4438;
+}
+
+.Addbutton {
+  justify-self: end;
+  align-self: end;
+  width: 40px;
+  height: 40px;
+  background-color: #8e44ad;
+  color: white;
+  font-size: 24px;
+  border: none;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease;
+}
+.Addbutton:hover {
+  background-color: #9b59b6;
+}
+
+.tasklist {
+  grid-area: tasklist;
+  max-height: 216px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.tasklist ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  background-color: #e6fcf5;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.progress {
+  background-color: #ffd6d6;
+  border-radius: 20px;
+  padding: 6px 12px;
+  margin-right: 12px;
+  color: #b00020;
+  font-weight: 600;
+  font-size: 0.9rem;
+  min-width: 75px;
+  text-align: center;
+}
+
+.task-text {
+  flex-grow: 1;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #212529;
+  margin-left: 8px;
+}
+
+.circle-checkbox {
+  width: 20px;
+  height: 20px;
+  accent-color: #38d9a9;
+  cursor: pointer;
+}
+.note {
+  grid-area: note;
+  background-color: #ffe5e5;
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+  padding: 20px 25px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
+  color: #333;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.note p {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  color: #5c4438;
+}
+
+.note textarea {
+  width: 100%;
+  height: 260px;
+  min-height: 250px;
+  resize: none;
+  padding: 10px 12px;
+  border: 2px solid #c7b198;
+  border-radius: 12px;
+  font-size: 16px;
+  font-family: inherit;
+  background-color: #fffaf5;
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.note textarea:focus {
+  outline: none;
+  border-color: #a7795e;
+  box-shadow: 0 0 0 3px rgba(167, 121, 94, 0.2);
+}
+.time {
+  background-color: #c5f6fa;
+  border-radius: 20px;
+  padding: 6px 12px;
+  margin-right: 12px;
+  color: #228be6;
+  font-weight: 600;
+  font-size: 0.9rem;
+  min-width: 75px;
+  text-align: center;
+}
+.Addtasklist {
+  display: none;
+  grid-area: 2 / 1 / 3 / 2;
+  align-self: end;
+  justify-self: end;
+  background-color: #ffe5ec;
+  padding: 20px 25px;
+  border-radius: 20px 20px 0 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  max-width: 300px;
+  width: 100%;
+  font-family: "Poppins", sans-serif;
+}
+
+.Addtasklist p {
+  margin: 12px 0 6px;
+  font-weight: 600;
+  font-size: 16px;
+  color: #5c4438;
+}
+
+.Addtasklist input[type="text"],
+.Addtasklist input[type="time"] {
+  background-color: #fff;
+  border: 2px solid #d9d9d9;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 14px;
+  width: 100%;
+  margin-bottom: 10px;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.Addtasklist input[type="text"]:focus,
+.Addtasklist input[type="time"]:focus {
+  border-color: #a7795e;
+  box-shadow: 0 0 0 3px rgba(167, 121, 94, 0.2);
+  outline: none;
+}
+
+.time-inputs {
+  display: flex;
+  gap: 10px;
+}
+.Finish {
+  background-color: #b2f2bb;
+  color: #2f9e44;
+}
+.Overdue {
+  background-color: #ffc9c9;
+  color: #f03e3e;
+}
+.task-item.Doing:hover {
+  background-color: #c5f6fa;
+}
+.task-item.Finish {
+  background-color: #d1f7d6;
+}
+.task-item.Finish:hover {
+  background-color: #b2f2bb;
+}
+.task-item.Overdue {
+  background-color: #f8e0da;
+}
+.task-item.Overdue:hover {
+  background-color: #ffc9c9;
+}
