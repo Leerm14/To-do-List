@@ -12,7 +12,7 @@
       <div class="container">
         <div class="Header">
           <div class="logo">
-            <img src="img/logo.png" alt="logo" />
+            <a href="index.html"><img src="img/logo.png" alt="logo" /></a>
           </div>
           <div class="search-box">
             <img src="img/211817_search_strong_icon.png" alt="icon" />
@@ -26,84 +26,75 @@
           </div>
         </div>
         <div class="Date">
-          <div class="day-button">
-            <div class="day-label">Mon</div>
-            <div class="day-number">5</div>
-          </div>
-          <div class="day-button">
-            <div class="day-label">Tue</div>
-            <div class="day-number">6</div>
-          </div>
-          <div class="day-button">
-            <div class="day-label">Wed</div>
-            <div class="day-number">7</div>
-          </div>
-          <div class="day-button">
-            <div class="day-label">Thu</div>
-            <div class="day-number">8</div>
-          </div>
-          <div class="day-button">
-            <div class="day-label">Fri</div>
-            <div class="day-number">9</div>
-          </div>
-          <div class="day-button">
-            <div class="day-label">Sat</div>
-            <div class="day-number">10</div>
-          </div>
-          <div class="day-button">
-            <div class="day-label">Sun</div>
-            <div class="day-number">11</div>
-          </div>
+          <div class="day-button" onclick="changedatecss(this)">
+          <div class="day-label">Mon</div>
+          <div class="day-number">5</div>
+        </div>
+        <div class="day-button" onclick="changedatecss(this)">
+          <div class="day-label">Tue</div>
+          <div class="day-number">6</div>
+        </div>
+        <div class="day-button" onclick="changedatecss(this)">
+          <div class="day-label">Wed</div>
+          <div class="day-number">7</div>
+        </div>
+        <div class="day-button" onclick="changedatecss(this)">
+          <div class="day-label">Thu</div>
+          <div class="day-number">8</div>
+        </div>
+        <div class="day-button" onclick="changedatecss(this)">
+          <div class="day-label">Fri</div>
+          <div class="day-number">9</div>
+        </div>
+        <div class="day-button" onclick="changedatecss(this)">
+          <div class="day-label">Sat</div>
+          <div class="day-number">10</div>
+        </div>
+        <div class="day-button" onclick="changedatecss(this)">
+          <div class="day-label">Sun</div>
+          <div class="day-number">11</div>
+        </div>
       </div>
       <div class="MyTask">
-          <div class="note">
-            <p>Note</p>
-            <textarea id="inputText" rows="15" cols="36"></textarea>
+        <div class="note">
+          <p>Note</p>
+          <textarea id="inputText" rows="15" cols="36"></textarea>
+        </div>
+        <div class="title">My Tasks</div>
+        <div class="tasklist">
+          <ul>
+            <li class="task-item Overdue">
+              <div class="time">06:00 - 07:00</div>
+              <label for="task1" class="task-text">Thể dục</label>
+              <div class="progress">Overdue</div>
+              <input type="checkbox" id="task1" class="circle-checkbox" onclick="changeproress(this)"/>
+            </li>
+            <li class="task-item">
+              <div class="time">07:00 - 07:30</div>
+              <label for="task2" class="task-text">Ăn sáng</label>
+              <div class="progress"></div>
+              <input type="checkbox" id="task2" class="circle-checkbox" onclick="changeproress(this)"/>
+            </li>
+            <li class="task-item">
+              <div class="time">08:00 - 09:00</div>
+              <label for="task3" class="task-text">Học bài</label>
+              <div class="progress"></div>
+              <input type="checkbox" id="task3" class="circle-checkbox" onclick="changeproress(this)"/>
+            </li>
+          </ul>
+        </div>
+        <div class="Addtasklist">
+          <p>Title</p>
+          <input type="text" name="Title" id="Addtasktitle" required/>
+          <p>Time</p>
+          <div class="time-inputs">
+            <input type="time" name="startTime" required/>
+            <input type="time" name="endTime" required/>
           </div>
-          <div class="title">My Tasks</div>
-          <div class="tasklist">
-            <ul>
-              <li class="task-item Overdue">
-                <div class="time Overdue">06:00 - 07:00</div>
-                <label for="task1" class="task-text">Thể dục</label>
-                <div class="progress Overdue">Overdue</div>
-                <input type="checkbox" id="task1" class="circle-checkbox" />
-              </li>
-              <li class="task-item Finish">
-                <div class="time Finish">07:00 - 07:30</div>
-                <label for="task1" class="task-text">Ăn sáng</label>
-                <div class="progress Finish">Finish</div>
-                <input type="checkbox" id="task1" class="circle-checkbox" />
-              </li>
-              <li class="task-item Doing">
-                <div class="time Doing">08:00 - 09:00</div>
-                <label for="task1" class="task-text">Học bài</label>
-                <input type="checkbox" id="task1" class="circle-checkbox" />
-              </li>  
-            </ul>
-          </div>
-          <div class="Addtasklist">
-            <p>Title</p>
-            <input type="text" name="Title" id="Addtasktitle" />
-            <p>Time</p>
-            <div class="time-inputs">
-              <input type="time" name="startTime" />
-              <input type="time" name="endTime" />
-            </div>
-          </div>
-          <div class="Addbutton" onclick="addtask()">+</div>
+        </div>
+        <div class="Addbutton" onclick="addtask()">+</div>
       </div>
     </div>
     <script src="script.js"></script>
-    <script>
-      function addtask() {
-        var addTaskList = document.getElementsByClassName("Addtasklist")[0];
-        if (addTaskList.style.display == "none" || addTaskList.style.display == "") {
-          addTaskList.style.display = "block";
-        } else {
-          addTaskList.style.display = "none";
-        }
-      }
-    </script>
   </body>
 </html>

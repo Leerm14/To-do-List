@@ -109,7 +109,6 @@
   font-size: 14px;
   font-weight: bold;
 }
-
 .day-number {
   width: 32px;
   height: 32px;
@@ -120,6 +119,23 @@
   align-items: center;
   justify-content: center;
   font-weight: bold;
+}
+.day-button:hover {
+  background-color: #112250;
+  transition: background-color 0.3s;
+}
+
+.day-button.clicked {
+  background-color: #112250;
+  transition: background-color 0.3s;
+  .day-number {
+    transform: translateY(-25px);
+    transition: transform 1s;
+  }
+  .day-label {
+    transform: translateY(35px);
+    transition: transform 1s;
+  }
 }
 .MyTask {
   grid-area: MyTask;
@@ -193,15 +209,16 @@
 }
 
 .progress {
-  background-color: #ffd6d6;
+  background-color: #e6fcf5;
   border-radius: 20px;
   padding: 6px 12px;
   margin-right: 12px;
-  color: #b00020;
+  color: #228be6;
   font-weight: 600;
   font-size: 0.9rem;
   min-width: 75px;
   text-align: center;
+  transition: background-color 0.3s ease;
 }
 
 .task-text {
@@ -312,26 +329,39 @@
   display: flex;
   gap: 10px;
 }
-.Finish {
-  background-color: #b2f2bb;
-  color: #2f9e44;
-}
-.Overdue {
-  background-color: #ffc9c9;
-  color: #f03e3e;
-}
-.task-item.Doing:hover {
+.task-item:hover {
   background-color: #c5f6fa;
-}
-.task-item.Finish {
-  background-color: #d1f7d6;
-}
-.task-item.Finish:hover {
-  background-color: #b2f2bb;
+  .progress {
+    background-color: #c5f6fa;
+    color: #228be6;
+    transition: background-color 0.3s ease;
+  }
 }
 .task-item.Overdue {
   background-color: #f8e0da;
+  .time {
+    background-color: #ffc9c9;
+    color: #f03e3e;
+  }
+  .progress {
+    background-color: #ffc9c9;
+    color: #f03e3e;
+  }
 }
 .task-item.Overdue:hover {
   background-color: #ffc9c9;
+}
+.task-item.Finish {
+  background-color: #d1f7d6;
+  .time {
+    background-color: #b2f2bb;
+    color: #2f9e44;
+  }
+  .progress {
+    background-color: #b2f2bb;
+    color: #2f9e44;
+  }
+}
+.task-item.Finish:hover {
+  background-color: #b2f2bb;
 }
