@@ -133,7 +133,7 @@
     transition: transform 1s;
   }
   .day-label {
-    transform: translateY(35px);
+    transform: translateY(32px);
     transition: transform 1s;
   }
 }
@@ -297,6 +297,7 @@
   max-width: 300px;
   width: 100%;
   font-family: "Poppins", sans-serif;
+  flex-direction: row;
 }
 
 .Addtasklist p {
@@ -328,6 +329,16 @@
 .time-inputs {
   display: flex;
   gap: 10px;
+}
+.submit {
+  width: 100%;
+  align-items: center;
+  border-radius: 50px;
+  border-color: #f0c4b9;
+  background-color: white;
+}
+.submit:hover {
+  background-color: #ffe5e5;
 }
 .task-item:hover {
   background-color: #c5f6fa;
