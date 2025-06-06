@@ -147,7 +147,7 @@
 .MyTask {
   display: grid;
   grid-template-columns: 1.5fr 0.5fr;
-  grid-template-rows: 0.5fr 2fr 0.5fr;
+  grid-template-rows: 0.5fr 2.1fr 0.4fr;
   gap: 0px 20px;
   grid-template-areas:
     "title note"
@@ -287,7 +287,7 @@
 }
 .Addtasklist {
   display: none;
-  grid-area: 2 / 1 / 3 / 2;
+  grid-area: 1 / 1 / 3 / 2;
   align-self: end;
   justify-self: end;
   background-color: #ffe5ec;
@@ -308,7 +308,8 @@
 }
 
 .Addtasklist input[type="text"],
-.Addtasklist input[type="time"] {
+.Addtasklist input[type="time"],
+.Addtasklist input[type="date"] {
   background-color: #fff;
   border: 2px solid #d9d9d9;
   border-radius: 10px;
@@ -320,7 +321,8 @@
 }
 
 .Addtasklist input[type="text"]:focus,
-.Addtasklist input[type="time"]:focus {
+.Addtasklist input[type="time"]:focus,
+.Addtasklist input[type="date"]:focus {
   border-color: #a7795e;
   box-shadow: 0 0 0 3px rgba(167, 121, 94, 0.2);
   outline: none;

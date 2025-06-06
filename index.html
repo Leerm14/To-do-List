@@ -26,33 +26,33 @@
           </div>
         </div>
         <div class="Date">
-          <div class="day-button" onclick="changedatecss(this)">
+        <div class="day-button" onclick="changedatecss(this)">
           <div class="day-label">Mon</div>
-          <div class="day-number">5</div>
+          <div class="day-number"></div>
         </div>
         <div class="day-button" onclick="changedatecss(this)">
           <div class="day-label">Tue</div>
-          <div class="day-number">6</div>
+          <div class="day-number"></div>
         </div>
         <div class="day-button" onclick="changedatecss(this)">
           <div class="day-label">Wed</div>
-          <div class="day-number">7</div>
+          <div class="day-number"></div>
         </div>
         <div class="day-button" onclick="changedatecss(this)">
           <div class="day-label">Thu</div>
-          <div class="day-number">8</div>
+          <div class="day-number"></div>
         </div>
         <div class="day-button" onclick="changedatecss(this)">
           <div class="day-label">Fri</div>
-          <div class="day-number">9</div>
+          <div class="day-number"></div>
         </div>
         <div class="day-button" onclick="changedatecss(this)">
           <div class="day-label">Sat</div>
-          <div class="day-number">10</div>
+          <div class="day-number"></div>
         </div>
         <div class="day-button" onclick="changedatecss(this)">
           <div class="day-label">Sun</div>
-          <div class="day-number">11</div>
+          <div class="day-number"></div>
         </div>
       </div>
       <div class="MyTask">
@@ -84,8 +84,11 @@
           </ul>
         </div>
         <div class="Addtasklist">
+          <form>
           <p>Title</p>
           <input type="text" name="Title" id="Addtasktitle" required/>
+           <p>Date</p>
+            <input type="date" name="taskDate" id="Addtaskdate" required/>
           <p>Time</p>
           <div class="time-inputs">
             <input type="time" name="startTime" required/>
@@ -94,8 +97,10 @@
           <button type="submit" class="submit">Add</button>
         </div>
         <div class="Addbutton" onclick="addtask()">+</div>
+        </form>
       </div>
     </div>
-    <script src="script.js"></script>
+    <script src="js/scriptcss.js"></script>
+    <script src="js/script.js"></script>
   </body>
 </html>
