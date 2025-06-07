@@ -3,7 +3,6 @@ window.onload = function () {
   const day = new Date();
   const dayName = thu[day.getDay()];
   var buttonday = document.getElementsByClassName("day-button");
-  console.log(day.getDate());
   for (let i = 0; i < buttonday.length; i++) {
     if (
       buttonday[i].getElementsByClassName("day-label")[0].innerText == dayName
@@ -15,19 +14,14 @@ window.onload = function () {
       break;
     }
   }
-  var b = note;
-  var count = 1;
-  while (count <= 7) {
-    note++;
-    if (note <= 6) {
-      buttonday[note].getElementsByClassName("day-number")[0].innerText =
-        day.getDate() + count;
-      count++;
-    } else {
-      var a = 6 - note;
-      buttonday[b + a].getElementsByClassName("day-number")[0].innerText =
-        day.getDate() + a;
-      count++;
-    }
+  let count = 1;
+  for (let i = note + 1; i < buttonday.length; i++) {
+    buttonday[i].getElementsByClassName("day-number")[0].innerText =
+      day.getDate() + count;
+    count++;
+  }
+  for (let i = note - 1; i >= 0; i--) {
+    buttonday[i].getElementsByClassName("day-number")[0].innerText =
+      day.getDate() - (note - i);
   }
 };

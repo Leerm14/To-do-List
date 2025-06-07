@@ -1,6 +1,5 @@
-function addtask() {
+function backgroundaddtask() {
   var addTaskList = document.getElementsByClassName("Addtasklist")[0];
-  console.log(addTaskList.style);
   if (addTaskList.style.display == "none" || addTaskList.style.display == "") {
     addTaskList.style.display = "block";
   } else {

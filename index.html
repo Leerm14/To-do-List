@@ -86,21 +86,28 @@
         <div class="Addtasklist">
           <form>
           <p>Title</p>
-          <input type="text" name="Title" id="Addtasktitle" required/>
+          <input type="text" name="Title" id="title" required/>
            <p>Date</p>
-            <input type="date" name="taskDate" id="Addtaskdate" required/>
+            <input type="date" name="taskDate" id="date" required/>
           <p>Time</p>
           <div class="time-inputs">
-            <input type="time" name="startTime" required/>
-            <input type="time" name="endTime" required/>
+            <div class="From">
+              <p>From:</p>
+            <input type="time" name="startTime" id="from" required/>
+            </div>
+            <div class="To">
+              <p>To:</p>
+            <input type="time" name="endTime" id="to" required/>
+            </div>
           </div>
-          <button type="submit" class="submit">Add</button>
+          <button type="button" class="submit" onclick="add(this)">Add</button>
         </div>
-        <div class="Addbutton" onclick="addtask()">+</div>
+        <div class="Addbutton" onclick="backgroundaddtask()">+</div>
         </form>
       </div>
     </div>
     <script src="js/scriptcss.js"></script>
-    <script src="js/script.js"></script>
+    <script src="js/task.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
   </body>
 </html>

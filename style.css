@@ -31,7 +31,7 @@
 .container {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 0.4fr 0.6fr 2fr;
+  grid-template-rows: 0.3fr 0.6fr 2.1fr;
   grid-template-areas:
     "Header"
     "Date"
@@ -301,7 +301,7 @@
 }
 
 .Addtasklist p {
-  margin: 12px 0 6px;
+  margin: 6px 0;
   font-weight: 600;
   font-size: 16px;
   color: #5c4438;
@@ -316,10 +316,11 @@
   padding: 8px 10px;
   font-size: 14px;
   width: 100%;
-  margin-bottom: 10px;
   transition: border 0.2s ease, box-shadow 0.2s ease;
 }
-
+.Addtasklist input[type="time"] {
+  margin-bottom: 5px;
+}
 .Addtasklist input[type="text"]:focus,
 .Addtasklist input[type="time"]:focus,
 .Addtasklist input[type="date"]:focus {
@@ -338,6 +339,7 @@
   border-radius: 50px;
   border-color: #f0c4b9;
   background-color: white;
+  padding: 2px 0;
 }
 .submit:hover {
   background-color: #ffe5e5;
@@ -377,4 +379,14 @@
 }
 .task-item.Finish:hover {
   background-color: #b2f2bb;
+}
+.From p {
+  margin: 0 0 6px 2px;
+}
+.To p {
+  margin: 0 0px 6px 2px;
+}
+.sortable-ghost {
+  opacity: 0.5;
+  background: #ffe5e5;
 }
