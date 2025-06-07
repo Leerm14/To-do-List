@@ -31,3 +31,48 @@ function changeproress(checkbox) {
     taskitem.classList.remove("Finish");
   }
 }
+
+function updateTaskStatus() {
+  var taskItems = document.querySelectorAll(".task-item");
+  var now = new Date();
+  taskItems.forEach(function (item) {
+    var timeDiv = item.querySelector(".time");
+    var progressDiv = item.querySelector(".progress");
+    var checkbox = item.querySelector(".circle-checkbox");
+    var day = now.getDate();
+    var times = timeDiv.innerText.split(" - ");
+    var from = times[0].split(":");
+    var to = times[1].split(":");
+    var start = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      day,
+      parseInt(from[0]),
+      parseInt(from[1])
+    );
+    var end = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      day,
+      parseInt(to[0]),
+      parseInt(to[1])
+    );
+    console.log("Start: " + start);
+    console.log("End: " + end);
+    item.classList.remove("Overdue");
+    item.classList.remove("Finish");
+    if (!checkbox.checked) progressDiv.innerText = "";
+
+    if (checkbox.checked) {
+      progressDiv.innerText = "Finish";
+      item.classList.add("Finish");
+    } else if (now > end) {
+      progressDiv.innerText = "Overdue";
+      item.classList.add("Overdue");
+    } else {
+      progressDiv.innerText = "";
+    }
+  });
+}
+setInterval(updateTaskStatus, 30000);
+updateTaskStatus();

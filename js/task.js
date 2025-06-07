@@ -55,6 +55,7 @@ function add(x) {
   let to = document.getElementById("to").value;
   resetform();
   addtask(id, title, from, to);
+  renderTasksForDay(id);
 }
 function addtask(id, title, from, to) {
   var taskItems = JSON.parse(localStorage.getItem("task")) || [];
@@ -76,6 +77,33 @@ function resetform() {
   document.getElementById("from").value = "";
   document.getElementById("to").value = "";
 }
+function renderTasksForDay(selectedDay) {
+  let taskItems = JSON.parse(localStorage.getItem("task")) || [];
+  let tasksOfDay = taskItems.filter((task) => task.id === selectedDay);
+  let taskListUl = document.querySelector(".tasklist ul");
+  if (taskListUl) {
+    taskListUl.innerHTML = "";
+    if (tasksOfDay.length === 0) {
+      taskListUl.innerHTML = "";
+    } else {
+      tasksOfDay.forEach((task) => {
+        let li = document.createElement("li");
+        li.className = "task-item";
+        li.innerHTML = `
+          <div class="time">${task.from} - ${task.to}</div>
+          <label class="task-text">${task.title}</label>
+          <div class="progress"></div>
+          <input type="checkbox" id="task-text" class="circle-checkbox" onclick="changeproress(this)"/>
+        `;
+        taskListUl.appendChild(li);
+      });
+      Sortable.create(taskListUl, {
+        animation: 150,
+        ghostClass: "sortable-ghost",
+      });
+    }
+  }
+}
 let buttonday = document.getElementsByClassName("day-button");
 for (let i = 0; i < buttonday.length; i++) {
   buttonday[i].addEventListener("click", function () {
@@ -83,30 +111,6 @@ for (let i = 0; i < buttonday.length; i++) {
       this.getElementsByClassName("day-number")[0].innerText,
       10
     );
-    let taskItems = JSON.parse(localStorage.getItem("task")) || [];
-    let tasksOfDay = taskItems.filter((task) => task.id === selectedDay);
-    let taskListUl = document.querySelector(".tasklist ul");
-    if (taskListUl) {
-      taskListUl.innerHTML = "";
-      if (tasksOfDay.length === 0) {
-        taskListUl.innerHTML = "";
-      } else {
-        tasksOfDay.forEach((task) => {
-          let li = document.createElement("li");
-          li.className = "task-item";
-          li.innerHTML = `
-            <div class="time">${task.from} - ${task.to}</div>
-            <label class="task-text">${task.title}</label>
-            <div class="progress"></div>
-            <input type="checkbox" id="task-text" class="circle-checkbox" onclick="changeproress(this)"/>
-          `;
-          taskListUl.appendChild(li);
-        });
-        Sortable.create(taskListUl, {
-          animation: 150,
-          ghostClass: "sortable-ghost",
-        });
-      }
-    }
+    renderTasksForDay(selectedDay);
   });
 }
