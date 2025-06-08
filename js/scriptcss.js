@@ -1,5 +1,5 @@
 function backgroundaddtask() {
-  var addTaskList = document.getElementsByClassName("Addtasklist")[0];
+  let addTaskList = document.getElementsByClassName("Addtasklist")[0];
   if (addTaskList.style.display == "none" || addTaskList.style.display == "") {
     addTaskList.style.display = "block";
   } else {
@@ -8,21 +8,21 @@ function backgroundaddtask() {
 }
 
 function changedatecss(buttonday) {
-  var button = document.getElementsByClassName("day-button");
-  for (var i = 0; i < button.length; i++) {
+  let button = document.getElementsByClassName("day-button");
+  for (let i = 0; i < button.length; i++) {
     button[i].classList.remove("clicked");
   }
   buttonday.classList.add("clicked");
 }
 
 function changeproress(checkbox) {
-  var taskitem = checkbox.parentElement;
+  let taskitem = checkbox.parentElement;
   if (checkbox.checked) {
-    var progress = taskitem.getElementsByClassName("progress")[0];
+    let progress = taskitem.getElementsByClassName("progress")[0];
     progress.innerText = "Finish";
     taskitem.classList.add("Finish");
   } else {
-    var progress = taskitem.getElementsByClassName("progress")[0];
+    let progress = taskitem.getElementsByClassName("progress")[0];
     if (taskitem.classList.contains("Overdue")) {
       progress.innerText = "Overdue";
     } else {
@@ -33,32 +33,37 @@ function changeproress(checkbox) {
 }
 
 function updateTaskStatus() {
-  var taskItems = document.querySelectorAll(".task-item");
-  var now = new Date();
+  let taskItems = document.querySelectorAll(".task-item");
+  let now = new Date();
+  let selectedDate = document.querySelector(".day-button.clicked");
+  let day = now.getDate();
+  if (selectedDate) {
+    day = selectedDate.querySelector(".day-number").innerText;
+    day = parseInt(day, 10);
+    console.log(day);
+  }
   taskItems.forEach(function (item) {
-    var timeDiv = item.querySelector(".time");
-    var progressDiv = item.querySelector(".progress");
-    var checkbox = item.querySelector(".circle-checkbox");
-    var day = now.getDate();
-    var times = timeDiv.innerText.split(" - ");
-    var from = times[0].split(":");
-    var to = times[1].split(":");
-    var start = new Date(
+    let timeDiv = item.querySelector(".time");
+    let progressDiv = item.querySelector(".progress");
+    let checkbox = item.querySelector(".circle-checkbox");
+    let times = timeDiv.innerText.split(" - ");
+    let from = times[0].split(":");
+    let to = times[1].split(":");
+    let start = new Date(
       now.getFullYear(),
       now.getMonth(),
       day,
       parseInt(from[0]),
       parseInt(from[1])
     );
-    var end = new Date(
+    let end = new Date(
       now.getFullYear(),
       now.getMonth(),
       day,
       parseInt(to[0]),
       parseInt(to[1])
     );
-    console.log("Start: " + start);
-    console.log("End: " + end);
+    console.log(end);
     item.classList.remove("Overdue");
     item.classList.remove("Finish");
     if (!checkbox.checked) progressDiv.innerText = "";
@@ -74,5 +79,5 @@ function updateTaskStatus() {
     }
   });
 }
-setInterval(updateTaskStatus, 30000);
+setInterval(updateTaskStatus, 1000);
 updateTaskStatus();

@@ -36,6 +36,14 @@ window.onload = function () {
     buttonday[i].getElementsByClassName("day-number")[0].innerText =
       day.getDate() - (note - i);
   }
+  let dayselect = document.querySelector(".day-button.clicked");
+  if (dayselect) {
+    let selectedDay = parseInt(
+      dayselect.getElementsByClassName("day-number")[0].innerText,
+      10
+    );
+    renderTasksForDay(selectedDay);
+  }
   for (let i = 0; i < buttonday.length; i++) {
     let dayNum = parseInt(
       buttonday[i].getElementsByClassName("day-number")[0].innerText,
@@ -43,21 +51,20 @@ window.onload = function () {
     );
     week.push([dayNum, i]);
   }
-  console.log(week);
   return week;
 };
 
-function add(x) {
+function add() {
   let day = document.getElementById("date").value;
   let id = parseInt(day.split("-")[2], 10);
   let title = document.getElementById("title").value;
   let from = document.getElementById("from").value;
   let to = document.getElementById("to").value;
   resetform();
-  addtask(id, title, from, to);
+  addtask(id, title, from, to, 0);
   renderTasksForDay(id);
 }
-function addtask(id, title, from, to) {
+function addtask(id, title, from, to, statusbar) {
   var taskItems = JSON.parse(localStorage.getItem("task")) || [];
   const now = new Date();
   taskItems.push({
@@ -65,6 +72,7 @@ function addtask(id, title, from, to) {
     title: title,
     from: from,
     to: to,
+    statusbar: 0,
     month: now.getMonth() + 1,
     year: now.getFullYear(),
   });
