@@ -40,7 +40,6 @@ function updateTaskStatus() {
   if (selectedDate) {
     day = selectedDate.querySelector(".day-number").innerText;
     day = parseInt(day, 10);
-    console.log(day);
   }
   taskItems.forEach(function (item) {
     let timeDiv = item.querySelector(".time");

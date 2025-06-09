@@ -61,10 +61,10 @@ function add() {
   let from = document.getElementById("from").value;
   let to = document.getElementById("to").value;
   resetform();
-  addtask(id, title, from, to, 0);
+  addtask(id, title, from, to);
   renderTasksForDay(id);
 }
-function addtask(id, title, from, to, statusbar) {
+function addtask(id, title, from, to) {
   var taskItems = JSON.parse(localStorage.getItem("task")) || [];
   const now = new Date();
   taskItems.push({
@@ -72,7 +72,6 @@ function addtask(id, title, from, to, statusbar) {
     title: title,
     from: from,
     to: to,
-    statusbar: 0,
     month: now.getMonth() + 1,
     year: now.getFullYear(),
   });
@@ -120,5 +119,37 @@ for (let i = 0; i < buttonday.length; i++) {
       10
     );
     renderTasksForDay(selectedDay);
+  });
+}
+
+function loadNoteForSelectedDay() {
+  let selectedDate = document.querySelector(".day-button.clicked");
+  let day = new Date().getDate();
+  if (selectedDate) {
+    day = selectedDate.querySelector(".day-number").innerText;
+    day = parseInt(day, 10);
+  }
+  let noteTextarea = document.getElementById("inputText");
+  if (!noteTextarea) return;
+  let key = day;
+  noteTextarea.value = localStorage.getItem(key) || "";
+}
+
+let noteTextarea = document.getElementById("inputText");
+noteTextarea.addEventListener("input", function () {
+  let selectedDate = document.querySelector(".day-button.clicked");
+  let day = new Date().getDate();
+  if (selectedDate) {
+    day = selectedDate.querySelector(".day-number").innerText;
+    day = parseInt(day, 10);
+  }
+  let key = day;
+  localStorage.setItem(key, noteTextarea.value);
+});
+loadNoteForSelectedDay();
+let dayButtons = document.getElementsByClassName("day-button");
+for (let i = 0; i < dayButtons.length; i++) {
+  dayButtons[i].addEventListener("click", function () {
+    setTimeout(loadNoteForSelectedDay, 10);
   });
 }
