@@ -390,3 +390,31 @@
   opacity: 0.5;
   background: #ffe5e5;
 }
+@media (max-width: 1200px) {
+  .search-box {
+    width: 320px;
+  }
+  .container {
+    border-radius: 18px;
+  }
+  .Header {
+    border-top-right-radius: 18px;
+    border-top-left-radius: 18px;
+    padding: 0 12px;
+  }
+  .Date {
+    margin: 8px;
+    border-radius: 18px;
+  }
+  .MyTask {
+    margin: 0px 8px 8px 8px;
+    border-radius: 18px;
+    padding: 12px;
+    gap: 0 10px;
+  }
+  .note {
+    border-top-right-radius: 18px;
+    border-bottom-right-radius: 18px;
+    padding: 10px 8px;
+  }
+}
