@@ -62,7 +62,16 @@ function add() {
   let to = document.getElementById("to").value;
   resetform();
   addtask(id, title, from, to);
-  renderTasksForDay(id);
+  let selectedDayButton = document.querySelector(".day-button.clicked");
+  let selectedDay = id;
+  if (selectedDayButton) {
+    let dayNum = parseInt(
+      selectedDayButton.getElementsByClassName("day-number")[0].innerText,
+      10
+    );
+    if (!isNaN(dayNum)) selectedDay = dayNum;
+  }
+  renderTasksForDay(selectedDay);
 }
 function addtask(id, title, from, to) {
   var taskItems = JSON.parse(localStorage.getItem("task")) || [];
