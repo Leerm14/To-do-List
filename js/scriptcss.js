@@ -62,7 +62,6 @@ function updateTaskStatus() {
       parseInt(to[0]),
       parseInt(to[1])
     );
-    console.log(end);
     item.classList.remove("Overdue");
     item.classList.remove("Finish");
     if (!checkbox.checked) progressDiv.innerText = "";

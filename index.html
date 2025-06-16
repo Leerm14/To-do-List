@@ -18,11 +18,14 @@
             <img src="img/211817_search_strong_icon.png" alt="icon" />
             <input type="text" placeholder="Tìm kiếm..." />
           </div>
-          <div class="Notification">
+          <div class="log" id="logBtn">
             <img
-              src="img/4781824_alarm_alert_attention_bell_clock_icon.png"
-              alt="Notification"
+              src="img/circle-user-solid.svg"
+              alt="log"
             />
+            <div class="logout-menu" id="logoutMenu" style="display:none;">
+              <button id="logoutBtn">Log out</button>
+            </div>
           </div>
         </div>
         <div class="Date">
@@ -88,8 +91,22 @@
         </form>
       </div>
     </div>
-    <script src="js/task.js"></script>
+    <script type="module" src="js/task.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-        <script src="js/scriptcss.js"></script>
+    <script src="js/scriptcss.js"></script>
+    <script>
+      const logBtn = document.getElementById('logBtn');
+      const logoutMenu = document.getElementById('logoutMenu');
+      logBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        logoutMenu.style.display = logoutMenu.style.display === 'block' ? 'none' : 'block';
+      });
+      document.addEventListener('click', function() {
+        logoutMenu.style.display = 'none';
+      });
+      document.getElementById('logoutBtn').addEventListener('click', function() {
+        alert('Đã đăng xuất!');
+      });
+    </script>
   </body>
 </html>
