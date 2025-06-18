@@ -65,19 +65,24 @@ CreateACC.addEventListener("click", () => {
     errorMessage.style.display = "block";
     return;
   }
-  createUserWithEmailAndPassword(auth, email, password).catch((err) => {
-    let message = "";
-    if (err.code === "auth/email-already-in-use") {
-      errorMessage.textContent = "Email này đã được sử dụng!";
-    } else if (err.code === "auth/invalid-email") {
-      errorMessage.textContent = "Email không hợp lệ!";
-    } else if (err.code === "auth/weak-password") {
-      errorMessage.textContent = "Mật khẩu quá yếu. Hãy dùng ít nhất 6 ký tự!";
-    } else {
-      errorMessage.textContent = "Lỗi đăng ký: " + err.message;
-    }
-    errorMessage.style.display = "block";
-  });
+  createUserWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      window.location.href = "../index.html";
+    })
+    .catch((err) => {
+      let message = "";
+      if (err.code === "auth/email-already-in-use") {
+        errorMessage.textContent = "Email này đã được sử dụng!";
+      } else if (err.code === "auth/invalid-email") {
+        errorMessage.textContent = "Email không hợp lệ!";
+      } else if (err.code === "auth/weak-password") {
+        errorMessage.textContent =
+          "Mật khẩu quá yếu. Hãy dùng ít nhất 6 ký tự!";
+      } else {
+        errorMessage.textContent = "Lỗi đăng ký: " + err.message;
+      }
+      errorMessage.style.display = "block";
+    });
 });
 SignIn.addEventListener("click", () => {
   const email = document.getElementById("SignEmail").value;
@@ -90,20 +95,24 @@ SignIn.addEventListener("click", () => {
     errorMessage.style.display = "block";
     return;
   }
-  signInWithEmailAndPassword(auth, email, password).catch((error) => {
-    if (error.code === "auth/user-not-found") {
-      errorMessage.textContent = "Tài khoản chưa được đăng ký!";
-    } else if (error.code === "auth/wrong-password") {
-      errorMessage.textContent = "Mật khẩu không đúng!";
-    } else if (error.code === "auth/invalid-email") {
-      errorMessage.textContent = "Email không hợp lệ!";
-    } else if (error.code === "auth/invalid-credential") {
-      errorMessage.textContent = "Thông tin đăng nhập không hợp lệ.";
-    } else {
-      errorMessage.textContent = "Đăng nhập thất bại: " + error.message;
-    }
-    errorMessage.style.display = "block";
-  });
+  signInWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      window.location.href = "../index.html";
+    })
+    .catch((error) => {
+      if (error.code === "auth/user-not-found") {
+        errorMessage.textContent = "Tài khoản chưa được đăng ký!";
+      } else if (error.code === "auth/wrong-password") {
+        errorMessage.textContent = "Mật khẩu không đúng!";
+      } else if (error.code === "auth/invalid-email") {
+        errorMessage.textContent = "Email không hợp lệ!";
+      } else if (error.code === "auth/invalid-credential") {
+        errorMessage.textContent = "Thông tin đăng nhập không hợp lệ.";
+      } else {
+        errorMessage.textContent = "Đăng nhập thất bại: " + error.message;
+      }
+      errorMessage.style.display = "block";
+    });
 });
 
 onAuthStateChanged(auth, (user) => {
