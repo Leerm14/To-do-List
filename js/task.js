@@ -88,7 +88,8 @@ function add() {
   renderTasksForDay(selectedDay);
 }
 function addtask(day, title, from, to) {
-  push(ref(database, "task/" + day), {
+  const user = auth.currentUser;
+  push(ref(database, `users/${user.uid}/tasks/${day}`), {
     title: title,
     from: from,
     to: to,
@@ -101,32 +102,28 @@ function resetform() {
   document.getElementById("to").value = "";
 }
 function renderTasksForDay(selectedDay) {
-  onValue(ref(database, "task/"), (snapshot) => {
-    const data = snapshot.val() || {};
-    const dayTask = data[selectedDay] || {};
-    const tasksOfDay = Object.values(dayTask);
+  const user = auth.currentUser;
+  const tasksRef = ref(database, `users/${user.uid}/tasks/${selectedDay}`);
+  onValue(tasksRef, (snapshot) => {
+    const tasksOfDay = snapshot.exists() ? Object.values(snapshot.val()) : [];
     let taskListUl = document.querySelector(".tasklist ul");
     if (taskListUl) {
       taskListUl.innerHTML = "";
-      if (tasksOfDay.length === 0) {
-        taskListUl.innerHTML = "";
-      } else {
-        tasksOfDay.forEach((task) => {
-          let li = document.createElement("li");
-          li.className = "task-item";
-          li.innerHTML = `
-            <div class="time">${task.from} - ${task.to}</div>
-            <label class="task-text">${task.title}</label>
-            <div class="progress"></div>
-            <input type="checkbox" id="task-text" class="circle-checkbox" onclick="changeproress(this)"/>
-          `;
-          taskListUl.appendChild(li);
-        });
-        Sortable.create(taskListUl, {
-          animation: 150,
-          ghostClass: "sortable-ghost",
-        });
-      }
+      tasksOfDay.forEach((task) => {
+        let li = document.createElement("li");
+        li.className = "task-item";
+        li.innerHTML = `
+          <div class="time">${task.from} - ${task.to}</div>
+          <label class="task-text">${task.title}</label>
+          <div class="progress"></div>
+          <input type="checkbox" class="circle-checkbox" onclick="changeproress(this)"/>
+        `;
+        taskListUl.appendChild(li);
+      });
+      Sortable.create(taskListUl, {
+        animation: 150,
+        ghostClass: "sortable-ghost",
+      });
     }
   });
 }
@@ -145,8 +142,9 @@ noteTextarea.addEventListener("input", function () {
   if (selectedDate) {
     day = selectedDate.querySelector(".day-number").innerText;
   }
+  let user = auth.currentUser;
   let key = day;
-  set(ref(database, "note/" + key), noteTextarea.value);
+  set(ref(database, `users/${user.uid}/notes/${key}`), noteTextarea.value);
 });
 function loadNoteForSelectedDay() {
   let selectedDate = document.querySelector(".day-button.clicked");
@@ -157,7 +155,8 @@ function loadNoteForSelectedDay() {
   let noteTextarea = document.getElementById("inputText");
   if (!noteTextarea) return;
   let key = day;
-  const noteRef = ref(database, "note/" + key);
+  let user = auth.currentUser;
+  const noteRef = ref(database, `users/${user.uid}/notes/${key}`);
   get(noteRef).then((snapshot) => {
     noteTextarea.value = snapshot.exists() ? snapshot.val() : "";
   });
