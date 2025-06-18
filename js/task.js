@@ -9,8 +9,6 @@ import {
 } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-database.js";
 import {
   getAuth,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
 } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-auth.js";
@@ -71,11 +69,23 @@ window.onload = function () {
 };
 
 function add() {
-  let day = document.getElementById("date").value;
+  const day = document.getElementById("date").value;
+  const title = document.getElementById("title").value;
+  const from = document.getElementById("from").value;
+  const to = document.getElementById("to").value;
+  const warning = document.getElementById("task-warning");
+  warning.style.display = "none";
+  if (!day || !title || !from || !to) {
+    if (warning) warning.textContent = "Vui lòng điền đầy đủ thông tin!";
+    warning.style.display = "block";
+    return;
+  }
+  if (from >= to) {
+    warning.textContent = "Thời gian bắt đầu phải trước thời gian kết thúc!";
+    warning.style.display = "block";
+    return;
+  }
   let id = parseInt(day.split("-")[2], 10);
-  let title = document.getElementById("title").value;
-  let from = document.getElementById("from").value;
-  let to = document.getElementById("to").value;
   resetform();
   addtask(id, title, from, to);
   let selectedDayButton = document.querySelector(".day-button.clicked");

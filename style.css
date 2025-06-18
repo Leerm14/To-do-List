@@ -412,6 +412,12 @@
 .logout-menu button:hover {
   background: #ffb5cb;
 }
+#task-warning {
+  color: red;
+  font-size: 14px;
+  display: none;
+  margin: 6px 0;
+}
 @media (max-width: 1200px) {
   .search-box {
     width: 320px;
