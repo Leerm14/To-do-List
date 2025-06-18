@@ -65,24 +65,18 @@ CreateACC.addEventListener("click", () => {
     errorMessage.style.display = "block";
     return;
   }
-  createUserWithEmailAndPassword(auth, email, password)
-    .then(() => {
-      window.location.href = "../index.html";
-    })
-    .catch((err) => {
-      let message = "";
-      if (err.code === "auth/email-already-in-use") {
-        errorMessage.textContent = "Email này đã được sử dụng!";
-      } else if (err.code === "auth/invalid-email") {
-        errorMessage.textContent = "Email không hợp lệ!";
-      } else if (err.code === "auth/weak-password") {
-        errorMessage.textContent =
-          "Mật khẩu quá yếu. Hãy dùng ít nhất 6 ký tự!";
-      } else {
-        errorMessage.textContent = "Lỗi đăng ký: " + err.message;
-      }
-      errorMessage.style.display = "block";
-    });
+  createUserWithEmailAndPassword(auth, email, password).catch((err) => {
+    if (err.code === "auth/email-already-in-use") {
+      errorMessage.textContent = "Email này đã được sử dụng!";
+    } else if (err.code === "auth/invalid-email") {
+      errorMessage.textContent = "Email không hợp lệ!";
+    } else if (err.code === "auth/weak-password") {
+      errorMessage.textContent = "Mật khẩu quá yếu. Hãy dùng ít nhất 6 ký tự!";
+    } else {
+      errorMessage.textContent = "Lỗi đăng ký: " + err.message;
+    }
+    errorMessage.style.display = "block";
+  });
 });
 SignIn.addEventListener("click", () => {
   const email = document.getElementById("SignEmail").value;
