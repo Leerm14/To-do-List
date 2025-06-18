@@ -20,17 +20,24 @@
           </div>
           <div class="input-group">
             <span class="input-icon"><i class="fas fa-envelope"></i></span>
-            <input type="email" placeholder="Email" />
+            <input id="EmailCreate" type="email" placeholder="Email" />
           </div>
           <div class="input-group">
             <span class="input-icon"><i class="fas fa-lock"></i></span>
-            <input type="password" placeholder="Password" />
+            <input id="PasswordCreate" type="password" placeholder="Password" />
           </div>
-          <div class="input-group">
+          <div class="password-hint">Mật khẩu phải có ít nhất 6 ký tự.</div>
+          <div class="input-group" style="position: relative">
             <span class="input-icon"><i class="fas fa-lock"></i></span>
-            <input type="password" placeholder="Confirm Password" />
+            <input
+              id="CheckPasswordCreate"
+              type="password"
+              placeholder="Confirm Password"
+            />
+            <span class="checkmark" id="confirmCheckmark"></span>
           </div>
-          <button>Sign Up</button>
+          <div id="Create-password-error" class="password-error"></div>
+          <button id="CreateACC">Sign Up</button>
         </form>
       </div>
       <div class="form-container sign-in-container">
@@ -39,19 +46,20 @@
           <div class="social-container">
             <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
             <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-            <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="social"><i class="fab fa-github"></i></a>
           </div>
           <span>or use your account</span>
           <div class="input-group">
             <span class="input-icon"><i class="fas fa-envelope"></i></span>
-            <input type="email" placeholder="Email" />
+            <input id="SignEmail" type="email" placeholder="Email" />
           </div>
           <div class="input-group">
             <span class="input-icon"><i class="fas fa-lock"></i></span>
-            <input type="password" placeholder="Password" />
+            <input id="SignPass" type="password" placeholder="Password" />
           </div>
           <a href="#">Forgot your password?</a>
-          <button>Sign In</button>
+          <div id="signin-password-error" class="password-error"></div>
+          <button id="SignIn">Sign In</button>
         </form>
       </div>
       <div class="overlay-container">
@@ -71,6 +79,6 @@
         </div>
       </div>
     </div>
-    <script src="log.js"></script>
+    <script type="module" src="log.js"></script>
   </body>
 </html>

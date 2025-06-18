@@ -7,6 +7,13 @@ import {
   onValue,
   get,
 } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-database.js";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/11.9.0/firebase-auth.js";
 const firebaseConfig = {
   apiKey: "AIzaSyANTX_hlswxnxUmQRz04bEWsk62IFpHeLo",
   authDomain: "to-dolist-1410.firebaseapp.com",
@@ -19,6 +26,7 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
+const auth = getAuth(app);
 window.onload = function () {
   const thu = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const day = new Date();
@@ -162,3 +170,12 @@ for (let i = 0; i < dayButtons.length; i++) {
   });
 }
 window.add = add;
+document.getElementById("logoutBtn").addEventListener("click", function () {
+  signOut(auth).then(() => (window.location.href = "./log/log.html"));
+});
+onAuthStateChanged(auth, (user) => {
+  const path = window.location.pathname;
+  if (!user && !path.endsWith("/log/log.html")) {
+    window.location.href = "/log/log.html";
+  }
+});

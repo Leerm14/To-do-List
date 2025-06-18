@@ -172,7 +172,7 @@ input {
 }
 
 .overlay {
-  background: url("background.gif") center / cover no-repeat;
+  background: url("../img/background.gif") center / cover no-repeat;
   color: #ffffff;
   position: relative;
   left: -100%;
@@ -269,4 +269,51 @@ input {
 
 .input-group input:focus {
   box-shadow: none;
+}
+
+.password-error {
+  display: none;
+  color: #ff4b2b;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.password-hint {
+  color: #888;
+  font-size: 13px;
+  margin-bottom: 4px;
+  margin-top: -4px;
+  text-align: left;
+  width: 100%;
+  padding-left: 16px;
+}
+
+.checkmark {
+  position: absolute;
+  right: 32px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 20px;
+  width: 20px;
+  pointer-events: none;
+  display: none;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: block;
+  left: 6px;
+  top: 2px;
+  width: 6px;
+  height: 12px;
+  border: solid #28a745;
+  border-width: 0 3px 3px 0;
+  opacity: 1;
+  border-radius: 1px;
+  transform: rotate(45deg);
+}
+
+.input-group.correct .checkmark {
+  display: block;
 }
