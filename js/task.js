@@ -115,11 +115,11 @@ function renderTasksForDay(selectedDay) {
   const user = auth.currentUser;
   const tasksRef = ref(database, `users/${user.uid}/tasks/${selectedDay}`);
   onValue(tasksRef, (snapshot) => {
-    const tasksOfDay = snapshot.exists() ? Object.values(snapshot.val()) : [];
+    const tasksOfDay = snapshot.exists() ? Object.entries(snapshot.val()) : [];
     let taskListUl = document.querySelector(".tasklist ul");
     if (taskListUl) {
       taskListUl.innerHTML = "";
-      tasksOfDay.forEach((task) => {
+      tasksOfDay.forEach(([taskKey, task]) => {
         let li = document.createElement("li");
         li.className = "task-item";
         li.innerHTML = `
@@ -127,7 +127,15 @@ function renderTasksForDay(selectedDay) {
           <label class="task-text">${task.title}</label>
           <div class="progress"></div>
           <input type="checkbox" class="circle-checkbox" onclick="changeproress(this)"/>
+          <span class="delete-task" title="Xoá task" data-task-key="${taskKey}">&times;</span>
         `;
+        li.querySelector(".delete-task").addEventListener(
+          "click",
+          function (e) {
+            e.stopPropagation();
+            deleteTask(user.uid, selectedDay, taskKey);
+          }
+        );
         taskListUl.appendChild(li);
       });
       Sortable.create(taskListUl, {
@@ -137,6 +145,11 @@ function renderTasksForDay(selectedDay) {
     }
   });
 }
+function deleteTask(uid, day, taskKey) {
+  const taskRef = ref(database, `users/${uid}/tasks/${day}/${taskKey}`);
+  set(taskRef, null);
+}
+
 let buttonday = document.getElementsByClassName("day-button");
 for (let i = 0; i < buttonday.length; i++) {
   buttonday[i].addEventListener("click", function () {
@@ -186,5 +199,13 @@ onAuthStateChanged(auth, (user) => {
   const path = window.location.pathname;
   if (!user && !path.endsWith("/log/log.html")) {
     window.location.href = "/log/log.html";
+  }
+  if (user) {
+    let dayselect = document.querySelector(".day-button.clicked");
+    if (dayselect) {
+      let selectedDay =
+        dayselect.getElementsByClassName("day-number")[0].innerText;
+      renderTasksForDay(selectedDay);
+    }
   }
 });
