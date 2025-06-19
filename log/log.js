@@ -69,15 +69,8 @@ CreateACC.addEventListener("click", () => {
     return;
   }
   createUserWithEmailAndPassword(auth, email, password).catch((err) => {
-    if (err.code === "auth/email-already-in-use") {
-      errorMessage.textContent = "Email này đã được sử dụng!";
-    } else if (err.code === "auth/invalid-email") {
-      errorMessage.textContent = "Email không hợp lệ!";
-    } else if (err.code === "auth/weak-password") {
-      errorMessage.textContent = "Mật khẩu quá yếu. Hãy dùng ít nhất 6 ký tự!";
-    } else {
-      errorMessage.textContent = "Lỗi đăng ký: " + err.message;
-    }
+    console.log("CreateACC Error:", err);
+    errorMessage.textContent = "Đăng nhập thất bại";
     errorMessage.style.display = "block";
   });
 });
@@ -97,17 +90,8 @@ SignIn.addEventListener("click", () => {
       window.location.href = "../index.html";
     })
     .catch((error) => {
-      if (error.code === "auth/user-not-found") {
-        errorMessage.textContent = "Tài khoản chưa được đăng ký!";
-      } else if (error.code === "auth/wrong-password") {
-        errorMessage.textContent = "Mật khẩu không đúng!";
-      } else if (error.code === "auth/invalid-email") {
-        errorMessage.textContent = "Email không hợp lệ!";
-      } else if (error.code === "auth/invalid-credential") {
-        errorMessage.textContent = "Thông tin đăng nhập không hợp lệ.";
-      } else {
-        errorMessage.textContent = "Đăng nhập thất bại: " + error.message;
-      }
+      console.log("SignIn Error:", error);
+      errorMessage.textContent = "Đăng nhập thất bại";
       errorMessage.style.display = "block";
     });
 });
@@ -119,10 +103,10 @@ googleLoginBtn.addEventListener("click", () => {
       window.location.href = "../index.html";
     })
     .catch((error) => {
-      console.error("Lỗi đăng nhập Google:", error);
+      console.log("Google:", error);
       const errorMessage = document.getElementById("signin-password-error");
       if (errorMessage) {
-        errorMessage.textContent = "Lỗi đăng nhập Google: " + error.message;
+        errorMessage.textContent = "Đăng nhập thất bại";
         errorMessage.style.display = "block";
       }
     });
@@ -135,10 +119,10 @@ githubLoginBtn.addEventListener("click", () => {
       window.location.href = "../index.html";
     })
     .catch((error) => {
-      console.error("Lỗi đăng nhập Google:", error);
+      console.log("github:", error);
       const errorMessage = document.getElementById("signin-password-error");
       if (errorMessage) {
-        errorMessage.textContent = "Lỗi đăng nhập Google: " + error.message;
+        errorMessage.textContent = "Đăng nhập thất bại";
         errorMessage.style.display = "block";
       }
     });
