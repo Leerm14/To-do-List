@@ -321,6 +321,7 @@
   width: 100%;
   font-family: "Poppins", sans-serif;
   flex-direction: row;
+  z-index: 2;
 }
 
 .Addtasklist p {
