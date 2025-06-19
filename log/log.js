@@ -20,6 +20,9 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  signInWithPopup,
+  GithubAuthProvider,
+  GoogleAuthProvider,
 } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-auth.js";
 const firebaseConfig = {
   apiKey: "AIzaSyANTX_hlswxnxUmQRz04bEWsk62IFpHeLo",
@@ -108,7 +111,38 @@ SignIn.addEventListener("click", () => {
       errorMessage.style.display = "block";
     });
 });
-
+const googleLoginBtn = document.getElementById("google");
+googleLoginBtn.addEventListener("click", () => {
+  const provider = new GoogleAuthProvider();
+  signInWithPopup(auth, provider)
+    .then(() => {
+      window.location.href = "../index.html";
+    })
+    .catch((error) => {
+      console.error("Lỗi đăng nhập Google:", error);
+      const errorMessage = document.getElementById("signin-password-error");
+      if (errorMessage) {
+        errorMessage.textContent = "Lỗi đăng nhập Google: " + error.message;
+        errorMessage.style.display = "block";
+      }
+    });
+});
+const githubLoginBtn = document.getElementById("github");
+githubLoginBtn.addEventListener("click", () => {
+  const provider = new GithubAuthProvider();
+  signInWithPopup(auth, provider)
+    .then(() => {
+      window.location.href = "../index.html";
+    })
+    .catch((error) => {
+      console.error("Lỗi đăng nhập Google:", error);
+      const errorMessage = document.getElementById("signin-password-error");
+      if (errorMessage) {
+        errorMessage.textContent = "Lỗi đăng nhập Google: " + error.message;
+        errorMessage.style.display = "block";
+      }
+    });
+});
 onAuthStateChanged(auth, (user) => {
   const path = window.location.pathname;
   if (user) {
