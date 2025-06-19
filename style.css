@@ -57,21 +57,25 @@
 .search-box {
   background-color: #ffe5e5;
   border-radius: 25px;
-  padding: 8px 16px;
+  padding: 0 10px;
   display: flex;
   align-items: center;
   width: 900px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
-.search-box input {
+.search-box select {
   border: none;
   outline: none;
   background: transparent;
   flex: 1;
   padding-left: 10px;
   font-size: 16px;
+  border-radius: 25px;
+  background-color: #ffe5e5;
+  height: 36px;
+  margin-left: 8px;
 }
+
 .search-box img {
   width: 20px;
   height: 20px;

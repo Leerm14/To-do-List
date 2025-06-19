@@ -119,6 +119,16 @@ function renderTasksForDay(selectedDay) {
     let taskListUl = document.querySelector(".tasklist ul");
     if (taskListUl) {
       taskListUl.innerHTML = "";
+      let filter = "all";
+      const filterSelect = document.getElementById("filterStatus");
+      if (filterSelect) filter = filterSelect.value;
+      const now = new Date();
+      let selectedDate = document.querySelector(".day-button.clicked");
+      let day = now.getDate();
+      if (selectedDate) {
+        day = selectedDate.querySelector(".day-number").innerText;
+        day = parseInt(day, 10);
+      }
       tasksOfDay.forEach(([taskKey, task]) => {
         let li = document.createElement("li");
         li.className = "task-item";
@@ -136,6 +146,26 @@ function renderTasksForDay(selectedDay) {
             deleteTask(user.uid, selectedDay, taskKey);
           }
         );
+        // Xác định trạng thái quá hạn
+        let timeDiv = li.querySelector(".time");
+        let times = timeDiv.innerText.split(" - ");
+        let to = times[1].split(":");
+        let end = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          day,
+          parseInt(to[0]),
+          parseInt(to[1])
+        );
+        let checkbox = li.querySelector(".circle-checkbox");
+        let isOverdue = !checkbox.checked && now > end;
+        if (
+          (filter === "unfinished" && checkbox.checked) ||
+          (filter === "finished" && !checkbox.checked) ||
+          (filter === "overdue" && !isOverdue)
+        ) {
+          return;
+        }
         taskListUl.appendChild(li);
       });
       Sortable.create(taskListUl, {
@@ -209,3 +239,14 @@ onAuthStateChanged(auth, (user) => {
     }
   }
 });
+const filterSelect = document.getElementById("filterStatus");
+if (filterSelect) {
+  filterSelect.addEventListener("change", function () {
+    let dayselect = document.querySelector(".day-button.clicked");
+    if (dayselect) {
+      let selectedDay =
+        dayselect.getElementsByClassName("day-number")[0].innerText;
+      renderTasksForDay(selectedDay);
+    }
+  });
+}
