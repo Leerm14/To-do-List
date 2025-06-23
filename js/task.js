@@ -25,6 +25,19 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 const auth = getAuth(app);
+function selectedDay() {
+  let selectedDate = document.querySelector(".day-button.clicked");
+  let today = new Date();
+  let btnDay = today.getDate();
+  if (selectedDate) {
+    btnDay = selectedDate.querySelector(".day-number").innerText;
+    btnDay = parseInt(btnDay, 10);
+  }
+  let btnDate = new Date(
+    Date.UTC(today.getFullYear(), today.getMonth(), btnDay)
+  );
+  return btnDate.toISOString().slice(0, 10);
+}
 window.onload = function () {
   const thu = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const day = new Date();
@@ -52,12 +65,7 @@ window.onload = function () {
     buttonday[i].getElementsByClassName("day-number")[0].innerText =
       day.getDate() - (note - i);
   }
-  let dayselect = document.querySelector(".day-button.clicked");
-  if (dayselect) {
-    let selectedDay =
-      dayselect.getElementsByClassName("day-number")[0].innerText;
-    renderTasksForDay(selectedDay);
-  }
+  renderTasksForDay(selectedDay());
   for (let i = 0; i < buttonday.length; i++) {
     let dayNum = parseInt(
       buttonday[i].getElementsByClassName("day-number")[0].innerText,
@@ -74,6 +82,8 @@ function add() {
   const from = document.getElementById("from").value;
   const to = document.getElementById("to").value;
   const warning = document.getElementById("task-warning");
+  // 0:unfinish  1:finish 2:overdue
+  let status = 0;
   warning.style.display = "none";
   if (!day || !title || !from || !to) {
     if (warning) warning.textContent = "Vui lòng điền đầy đủ thông tin!";
@@ -85,24 +95,17 @@ function add() {
     warning.style.display = "block";
     return;
   }
-  let id = parseInt(day.split("-")[2], 10);
   resetform();
-  addtask(id, title, from, to);
-  let selectedDayButton = document.querySelector(".day-button.clicked");
-  let selectedDay = day;
-  if (selectedDayButton) {
-    let dayNum =
-      selectedDayButton.getElementsByClassName("day-number")[0].innerText;
-    selectedDay = dayNum;
-  }
-  renderTasksForDay(selectedDay);
+  addtask(day, title, from, to, status);
+  renderTasksForDay(selectedDay());
 }
-function addtask(day, title, from, to) {
+function addtask(dayKey, title, from, to, status) {
   const user = auth.currentUser;
-  push(ref(database, `users/${user.uid}/tasks/${day}`), {
+  push(ref(database, `users/${user.uid}/tasks/${dayKey}`), {
     title: title,
     from: from,
     to: to,
+    status: status,
   });
 }
 function resetform() {
@@ -111,9 +114,10 @@ function resetform() {
   document.getElementById("from").value = "";
   document.getElementById("to").value = "";
 }
-function renderTasksForDay(selectedDay) {
+function renderTasksForDay(selectedDayKey) {
   const user = auth.currentUser;
-  const tasksRef = ref(database, `users/${user.uid}/tasks/${selectedDay}`);
+  if (!user) return;
+  const tasksRef = ref(database, `users/${user.uid}/tasks/${selectedDayKey}`);
   onValue(tasksRef, (snapshot) => {
     const tasksOfDay = snapshot.exists() ? Object.entries(snapshot.val()) : [];
     let taskListUl = document.querySelector(".tasklist ul");
@@ -122,50 +126,39 @@ function renderTasksForDay(selectedDay) {
       let filter = "all";
       const filterSelect = document.getElementById("filterStatus");
       if (filterSelect) filter = filterSelect.value;
-      const now = new Date();
-      let selectedDate = document.querySelector(".day-button.clicked");
-      let day = now.getDate();
-      if (selectedDate) {
-        day = selectedDate.querySelector(".day-number").innerText;
-        day = parseInt(day, 10);
-      }
       tasksOfDay.forEach(([taskKey, task]) => {
+        if (
+          (filter === "unfinished" && task.status !== 0) ||
+          (filter === "finished" && task.status !== 1) ||
+          (filter === "overdue" && task.status !== 2)
+        ) {
+          return;
+        }
         let li = document.createElement("li");
         li.className = "task-item";
+        if (task.status === 1) {
+          li.classList.add("Finish");
+        } else if (task.status === 2) {
+          li.classList.add("Overdue");
+        }
         li.innerHTML = `
           <div class="time">${task.from} - ${task.to}</div>
           <label class="task-text">${task.title}</label>
-          <div class="progress"></div>
-          <input type="checkbox" class="circle-checkbox" onclick="changeproress(this)"/>
+          <div class="progress">${
+            task.status === 1 ? "Finish" : task.status === 2 ? "Overdue" : ""
+          }</div>
+          <input type="checkbox" class="circle-checkbox" onclick="changeproress(this)" ${
+            task.status === 1 ? "checked" : ""
+          }/>
           <span class="delete-task" title="Xoá task" data-task-key="${taskKey}">&times;</span>
         `;
         li.querySelector(".delete-task").addEventListener(
           "click",
           function (e) {
             e.stopPropagation();
-            deleteTask(user.uid, selectedDay, taskKey);
+            deleteTask(user.uid, selectedDayKey, taskKey);
           }
         );
-        // Xác định trạng thái quá hạn
-        let timeDiv = li.querySelector(".time");
-        let times = timeDiv.innerText.split(" - ");
-        let to = times[1].split(":");
-        let end = new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          day,
-          parseInt(to[0]),
-          parseInt(to[1])
-        );
-        let checkbox = li.querySelector(".circle-checkbox");
-        let isOverdue = !checkbox.checked && now > end;
-        if (
-          (filter === "unfinished" && checkbox.checked) ||
-          (filter === "finished" && !checkbox.checked) ||
-          (filter === "overdue" && !isOverdue)
-        ) {
-          return;
-        }
         taskListUl.appendChild(li);
       });
       Sortable.create(taskListUl, {
@@ -183,70 +176,131 @@ function deleteTask(uid, day, taskKey) {
 let buttonday = document.getElementsByClassName("day-button");
 for (let i = 0; i < buttonday.length; i++) {
   buttonday[i].addEventListener("click", function () {
-    let selectedDay = this.getElementsByClassName("day-number")[0].innerText;
-    renderTasksForDay(selectedDay);
+    const dayKey = selectedDay();
+    renderTasksForDay(dayKey);
   });
 }
 
 let noteTextarea = document.getElementById("inputText");
 noteTextarea.addEventListener("input", function () {
-  let selectedDate = document.querySelector(".day-button.clicked");
-  let day = new Date().getDate();
-  if (selectedDate) {
-    day = selectedDate.querySelector(".day-number").innerText;
-  }
   let user = auth.currentUser;
-  let key = day;
+  let key = selectedDay();
   set(ref(database, `users/${user.uid}/notes/${key}`), noteTextarea.value);
 });
 function loadNoteForSelectedDay() {
-  let selectedDate = document.querySelector(".day-button.clicked");
-  let day;
-  if (selectedDate) {
-    day = selectedDate.querySelector(".day-number").innerText;
-  }
   let noteTextarea = document.getElementById("inputText");
   if (!noteTextarea) return;
-  let key = day;
+  let key = selectedDay();
   let user = auth.currentUser;
+  if (!user) return;
   const noteRef = ref(database, `users/${user.uid}/notes/${key}`);
   get(noteRef).then((snapshot) => {
     noteTextarea.value = snapshot.exists() ? snapshot.val() : "";
   });
 }
-setTimeout(loadNoteForSelectedDay, 5);
+setTimeout(loadNoteForSelectedDay, 20);
 let dayButtons = document.getElementsByClassName("day-button");
 for (let i = 0; i < dayButtons.length; i++) {
   dayButtons[i].addEventListener("click", function () {
     setTimeout(loadNoteForSelectedDay, 10);
   });
 }
-window.add = add;
 document.getElementById("logoutBtn").addEventListener("click", function () {
   signOut(auth).then(() => (window.location.href = "./log/log.html"));
 });
+const filterSelect = document.getElementById("filterStatus");
+if (filterSelect) {
+  filterSelect.addEventListener("change", function () {
+    renderTasksForDay(selectedDay());
+  });
+}
+function changeproress(checkbox) {
+  let taskitem = checkbox.parentElement;
+  let progress = taskitem.getElementsByClassName("progress")[0];
+  let user = auth.currentUser;
+  let dayKey = selectedDay();
+  let deleteBtn = taskitem.querySelector(".delete-task");
+  let taskKey = deleteBtn ? deleteBtn.getAttribute("data-task-key") : null;
+  if (!user || !taskKey) return;
+  let newStatus = 0;
+  if (checkbox.checked) {
+    progress.innerText = "Finish";
+    taskitem.classList.add("Finish");
+    newStatus = 1;
+  } else {
+    if (taskitem.classList.contains("Overdue")) {
+      progress.innerText = "Overdue";
+      newStatus = 2;
+    } else {
+      progress.innerText = "";
+      newStatus = 0;
+    }
+    taskitem.classList.remove("Finish");
+  }
+  const taskRef = ref(
+    database,
+    `users/${user.uid}/tasks/${dayKey}/${taskKey}/status`
+  );
+  set(taskRef, newStatus);
+}
+
+function updateTaskStatus() {
+  let taskItems = document.querySelectorAll(".task-item");
+  let now = new Date();
+  let selectedDate = document.querySelector(".day-button.clicked");
+  let day = now.getDate();
+  if (selectedDate) {
+    day = selectedDate.querySelector(".day-number").innerText;
+    day = parseInt(day, 10);
+  }
+  let user = auth.currentUser;
+  let dayKey = selectedDay();
+  let updated = false;
+  taskItems.forEach(function (item) {
+    let timeDiv = item.querySelector(".time");
+    let progressDiv = item.querySelector(".progress");
+    let deleteBtn = item.querySelector(".delete-task");
+    let taskKey = deleteBtn ? deleteBtn.getAttribute("data-task-key") : null;
+    let times = timeDiv.innerText.split(" - ");
+    let to = times[1].split(":");
+    let end = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      day,
+      parseInt(to[0]),
+      parseInt(to[1])
+    );
+    if (now > end) {
+      if (user && taskKey) {
+        if (!item.classList.contains("Finish")) {
+          const taskRef = ref(
+            database,
+            `users/${user.uid}/tasks/${dayKey}/${taskKey}/status`
+          );
+          if (progressDiv.innerText !== "Overdue") {
+            set(taskRef, 2);
+            updated = true;
+            console.log("Task marked as overdue:", taskKey);
+          }
+        }
+      }
+    }
+  });
+  if (updated) {
+    console.log("Updating tasks for the day:", dayKey);
+    renderTasksForDay(dayKey);
+  }
+}
+setInterval(updateTaskStatus, 5000);
+updateTaskStatus();
 onAuthStateChanged(auth, (user) => {
   const path = window.location.pathname;
   if (!user && !path.endsWith("/log/log.html")) {
     window.location.href = "/log/log.html";
   }
   if (user) {
-    let dayselect = document.querySelector(".day-button.clicked");
-    if (dayselect) {
-      let selectedDay =
-        dayselect.getElementsByClassName("day-number")[0].innerText;
-      renderTasksForDay(selectedDay);
-    }
+    renderTasksForDay(selectedDay());
   }
 });
-const filterSelect = document.getElementById("filterStatus");
-if (filterSelect) {
-  filterSelect.addEventListener("change", function () {
-    let dayselect = document.querySelector(".day-button.clicked");
-    if (dayselect) {
-      let selectedDay =
-        dayselect.getElementsByClassName("day-number")[0].innerText;
-      renderTasksForDay(selectedDay);
-    }
-  });
-}
+window.add = add;
+window.changeproress = changeproress;
