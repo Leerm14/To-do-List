@@ -150,11 +150,19 @@ function renderTasksForDay(selectedDayKey) {
       let filter = "all";
       const filterSelect = document.getElementById("filterStatus");
       if (filterSelect) filter = filterSelect.value;
+      const searchInput = document.getElementById("searchInput");
+      const keyword = searchInput ? searchInput.value.trim().toLowerCase() : "";
       tasksOfDay.forEach(([taskKey, task]) => {
         if (
           (filter === "unfinished" && task.status !== 0) ||
           (filter === "finished" && task.status !== 1) ||
           (filter === "overdue" && task.status !== 2)
+        ) {
+          return;
+        }
+        if (
+          keyword &&
+          (!task.title || !task.title.toLowerCase().includes(keyword))
         ) {
           return;
         }
@@ -331,6 +339,12 @@ document.getElementById("logoutBtn").addEventListener("click", function () {
 const filterSelect = document.getElementById("filterStatus");
 if (filterSelect) {
   filterSelect.addEventListener("change", function () {
+    renderTasksForDay(selectedDay());
+  });
+}
+const searchInput = document.getElementById("searchInput");
+if (searchInput) {
+  searchInput.addEventListener("input", function () {
     renderTasksForDay(selectedDay());
   });
 }
