@@ -77,9 +77,14 @@
           <form>
           <p>Title</p>
           <input type="text" name="Title" id="title" required/>
-           <p>Date</p>
-            <input type="date" name="taskDate" id="date" required/>
-          <p>Time</p>
+          <p>Date</p>
+          <input type="date" name="taskDate" id="date" required/>
+          <p>Repeat</p>
+          <select id="repeat" name="repeat">
+            <option value="none">None</option>
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+          </select>
           <div class="time-inputs">
             <div class="From">
               <p>From:</p>

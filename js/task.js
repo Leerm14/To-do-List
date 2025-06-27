@@ -81,6 +81,7 @@ function add() {
   const title = document.getElementById("title").value;
   const from = document.getElementById("from").value;
   const to = document.getElementById("to").value;
+  const repeat = document.getElementById("repeat").value;
   const warning = document.getElementById("task-warning");
   // 0:unfinish  1:finish 2:overdue
   let status = 0;
@@ -96,16 +97,38 @@ function add() {
     return;
   }
   resetform();
-  addtask(day, title, from, to, status);
+  if (repeat === "none") {
+    addtask(day, title, from, to, status, repeat);
+  } else {
+    let startDate = new Date(day);
+    if (repeat === "daily") {
+      let repeatCount = 365;
+      for (let i = 0; i < repeatCount; i++) {
+        let targetDate = new Date(startDate);
+        targetDate.setDate(startDate.getDate() + i);
+        let dayKey = targetDate.toISOString().slice(0, 10);
+        addtask(dayKey, title, from, to, status, repeat);
+      }
+    } else if (repeat === "weekly") {
+      let repeatCount = 52;
+      for (let i = 0; i < repeatCount; i++) {
+        let targetDate = new Date(startDate);
+        targetDate.setDate(startDate.getDate() + i * 7);
+        let dayKey = targetDate.toISOString().slice(0, 10);
+        addtask(dayKey, title, from, to, status, repeat);
+      }
+    }
+  }
   renderTasksForDay(selectedDay());
 }
-function addtask(dayKey, title, from, to, status) {
+function addtask(dayKey, title, from, to, status, repeat = "none") {
   const user = auth.currentUser;
   push(ref(database, `users/${user.uid}/tasks/${dayKey}`), {
     title: title,
     from: from,
     to: to,
     status: status,
+    repeat: repeat,
   });
 }
 function resetform() {
@@ -113,6 +136,7 @@ function resetform() {
   document.getElementById("title").value = "";
   document.getElementById("from").value = "";
   document.getElementById("to").value = "";
+  document.getElementById("repeat").value = "none";
 }
 function renderTasksForDay(selectedDayKey) {
   const user = auth.currentUser;
