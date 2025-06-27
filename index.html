@@ -16,12 +16,7 @@
           </div>
           <div class="search-box">
             <img src="img/211817_search_strong_icon.png" alt="icon" />
-            <select id="filterStatus">
-              <option value="all">Tất cả</option>
-              <option value="unfinished">Chưa hoàn thành</option>
-              <option value="finished">Đã hoàn thành</option>
-              <option value="overdue">Quá hạn</option>
-            </select>
+            <input type="text" placeholder="Search tasks..." id="searchInput" />
           </div>
           <div class="log" id="logBtn">
             <img
@@ -68,7 +63,17 @@
           <p>Note</p>
           <textarea id="inputText" rows="15" cols="36"></textarea>
         </div>
-        <div class="title">My Tasks</div>
+        <div class="title-row">
+          <div class="title">My Tasks</div>
+          <div class="filter-tasks">
+            <select id="filterStatus">
+              <option value="all">Tất cả</option>
+              <option value="unfinished">Chưa hoàn thành</option>
+              <option value="finished">Đã hoàn thành</option>
+              <option value="overdue">Quá hạn</option>
+            </select>
+          </div>
+        </div>
         <div class="tasklist">
           <ul>
           </ul>
