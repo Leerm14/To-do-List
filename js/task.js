@@ -174,6 +174,7 @@ function renderTasksForDay(selectedDayKey) {
           <input type="checkbox" class="circle-checkbox" onclick="changeproress(this)" ${
             task.status === 1 ? "checked" : ""
           }/>
+          <span class="edit-task" title="Chỉnh sửa task" data-task-key="${taskKey}">&#9998;</span>
           <span class="delete-task" title="Xoá task" data-task-key="${taskKey}">&times;</span>
         `;
         li.querySelector(".delete-task").addEventListener(
@@ -183,6 +184,10 @@ function renderTasksForDay(selectedDayKey) {
             deleteTask(user.uid, selectedDayKey, taskKey);
           }
         );
+        li.querySelector(".edit-task").addEventListener("click", function (e) {
+          e.stopPropagation();
+          showEditTaskForm(selectedDayKey, taskKey, task);
+        });
         taskListUl.appendChild(li);
       });
       Sortable.create(taskListUl, {
@@ -192,6 +197,97 @@ function renderTasksForDay(selectedDayKey) {
     }
   });
 }
+
+function showEditTaskForm(dayKey, taskKey, task) {
+  let addTaskList = document.getElementsByClassName("Addtasklist")[0];
+  addTaskList.style.display = "block";
+  document.getElementById("date").value = dayKey;
+  document.getElementById("title").value = task.title;
+  document.getElementById("from").value = task.from;
+  document.getElementById("to").value = task.to;
+  document.getElementById("repeat").value = task.repeat || "none";
+  addTaskList.setAttribute("data-editing", "true");
+  addTaskList.setAttribute("data-edit-task-key", taskKey);
+  addTaskList.setAttribute("data-edit-day-key", dayKey);
+  let submitBtn = addTaskList.querySelector("button.submit");
+  let cancelBtn = addTaskList.querySelector("button.cancel-edit");
+  submitBtn.textContent = "Save";
+  submitBtn.onclick = function () {
+    saveEditTask();
+  };
+  if (cancelBtn) {
+    cancelBtn.style.width = "49%";
+    submitBtn.style.width = "49%";
+    cancelBtn.style.display = "inline-block";
+  }
+}
+function cancelEditTask() {
+  let addTaskList = document.getElementsByClassName("Addtasklist")[0];
+  resetform();
+  addTaskList.removeAttribute("data-editing");
+  addTaskList.removeAttribute("data-edit-task-key");
+  addTaskList.removeAttribute("data-edit-day-key");
+  let submitBtn = addTaskList.querySelector("button.submit");
+  let cancelBtn = addTaskList.querySelector("button.cancel-edit");
+  submitBtn.textContent = "Add";
+  submitBtn.onclick = function () {
+    add();
+  };
+  if (cancelBtn) {
+    submitBtn.style.width = "100%";
+    cancelBtn.style.display = "none";
+  }
+  addTaskList.style.display = "none";
+}
+
+function saveEditTask() {
+  const addTaskList = document.getElementsByClassName("Addtasklist")[0];
+  const dayKey = addTaskList.getAttribute("data-edit-day-key");
+  const taskKey = addTaskList.getAttribute("data-edit-task-key");
+  const user = auth.currentUser;
+  if (!user || !dayKey || !taskKey) return;
+  const title = document.getElementById("title").value;
+  const from = document.getElementById("from").value;
+  const to = document.getElementById("to").value;
+  const repeat = document.getElementById("repeat").value;
+  const warning = document.getElementById("task-warning");
+  if (!title || !from || !to) {
+    warning.textContent = "Vui lòng điền đầy đủ thông tin!";
+    warning.style.display = "block";
+    return;
+  }
+  if (from >= to) {
+    warning.textContent = "Thời gian bắt đầu phải trước thời gian kết thúc!";
+    warning.style.display = "block";
+    return;
+  }
+  const taskRef = ref(database, `users/${user.uid}/tasks/${dayKey}/${taskKey}`);
+  set(taskRef, {
+    title: title,
+    from: from,
+    to: to,
+    status: 0,
+    repeat: repeat,
+  }).then(() => {
+    resetform();
+    addTaskList.removeAttribute("data-editing");
+    addTaskList.removeAttribute("data-edit-task-key");
+    addTaskList.removeAttribute("data-edit-day-key");
+    let submitBtn = addTaskList.querySelector("button.submit");
+    let cancelBtn = addTaskList.querySelector("button.cancel-edit");
+    submitBtn.textContent = "Add";
+    submitBtn.onclick = function () {
+      add();
+    };
+    if (cancelBtn) {
+      submitBtn.style.width = "100%";
+      cancelBtn.style.display = "none";
+    }
+    addTaskList.style.display = "none";
+    renderTasksForDay(selectedDay());
+  });
+}
+
 function deleteTask(uid, day, taskKey) {
   const taskRef = ref(database, `users/${uid}/tasks/${day}/${taskKey}`);
   set(taskRef, null);
@@ -328,3 +424,4 @@ onAuthStateChanged(auth, (user) => {
 });
 window.add = add;
 window.changeproress = changeproress;
+window.cancelEditTask = cancelEditTask;

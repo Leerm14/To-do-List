@@ -75,32 +75,34 @@
         </div>
         <div class="Addtasklist">
           <form>
-          <p>Title</p>
-          <input type="text" name="Title" id="title" required/>
-          <p>Date</p>
-          <input type="date" name="taskDate" id="date" required/>
-          <p>Repeat</p>
-          <select id="repeat" name="repeat">
-            <option value="none">None</option>
-            <option value="daily">Daily</option>
-            <option value="weekly">Weekly</option>
-          </select>
-          <div class="time-inputs">
-            <div class="From">
-              <p>From:</p>
-            <input type="time" name="startTime" id="from" required/>
+            <p>Title</p>
+            <input type="text" name="Title" id="title" required/>
+            <p>Date</p>
+            <input type="date" name="taskDate" id="date" required/>
+            <p>Repeat</p>
+            <select id="repeat" name="repeat">
+              <option value="none">None</option>
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+            </select>
+            <div class="time-inputs">
+              <div class="From">
+                <p>From:</p>
+                <input type="time" name="startTime" id="from" required/>
+              </div>
+              <div class="To">
+                <p>To:</p>
+                <input type="time" name="endTime" id="to" required/>
+              </div>
             </div>
-            <div class="To">
-              <p>To:</p>
-            <input type="time" name="endTime" id="to" required/>
+            <div id="task-warning"></div>
+            <div class="button-row">
+              <button type="button" class="submit" onclick="add()">Add</button>
+              <button type="button" class="cancel-edit" style="display:none;" onclick="cancelEditTask()">Cancel</button>
             </div>
-          </div>
-          <div id="task-warning">
-          </div>
-          <button type="button" class="submit" onclick="add()">Add</button>
+          </form>
         </div>
         <div class="Addbutton" onclick="backgroundaddtask()">+</div>
-        </form>
       </div>
     </div>
     <script type="module" src="js/task.js"></script>
