@@ -414,14 +414,14 @@ function updateTaskStatus() {
           if (progressDiv.innerText !== "Overdue") {
             set(taskRef, 2);
             updated = true;
-            console.log("Task marked as overdue:", taskKey);
+            console.log(taskKey);
           }
         }
       }
     }
   });
   if (updated) {
-    console.log("Updating tasks for the day:", dayKey);
+    console.log(dayKey);
     renderTasksForDay(dayKey);
   }
 }
