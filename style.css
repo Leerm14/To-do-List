@@ -204,7 +204,7 @@
 
 .tasklist {
   grid-area: tasklist;
-  max-height: 216px;
+  max-height: 290px;
   overflow-y: auto;
   padding-right: 5px;
 }
