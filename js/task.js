@@ -149,6 +149,9 @@ function renderTasksForDay(selectedDayKey) {
       if (filterSelect) filter = filterSelect.value;
       const searchInput = document.getElementById("searchInput");
       const keyword = searchInput ? searchInput.value.trim().toLowerCase() : "";
+      let overdueTasks = [];
+      let finishTasks = [];
+      let normalTasks = [];
       tasksOfDay.forEach(([taskKey, task]) => {
         if (
           (filter === "unfinished" && task.status !== 0) ||
@@ -163,6 +166,18 @@ function renderTasksForDay(selectedDayKey) {
         ) {
           return;
         }
+        if (task.status === 2) {
+          overdueTasks.push([taskKey, task]);
+        } else if (task.status === 1) {
+          finishTasks.push([taskKey, task]);
+        } else {
+          normalTasks.push([taskKey, task]);
+        }
+      });
+
+      let sortedTasks = overdueTasks.concat(finishTasks, normalTasks);
+
+      sortedTasks.forEach(([taskKey, task]) => {
         let li = document.createElement("li");
         li.className = "task-item";
         if (task.status === 1) {
