@@ -70,7 +70,7 @@ CreateACC.addEventListener("click", () => {
   }
   createUserWithEmailAndPassword(auth, email, password).catch((err) => {
     console.log("CreateACC Error:", err);
-    errorMessage.textContent = "Đăng nhập thất bại";
+    errorMessage.textContent = "Đăng ký thất bại";
     errorMessage.style.display = "block";
   });
 });
