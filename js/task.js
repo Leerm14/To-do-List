@@ -59,8 +59,12 @@ window.onload = function () {
     count++;
   }
   for (let i = note - 1; i >= 0; i--) {
+    let prevDate = new Date(day);
+    prevDate.setDate(day.getDate() - (note - i));
+    let calculatedDay = prevDate.getDate();
     buttonday[i].getElementsByClassName("day-number")[0].innerText =
-      day.getDate() - (note - i);
+      calculatedDay;
+    console.log(calculatedDay);
   }
   renderTasksForDay(selectedDay());
   for (let i = 0; i < buttonday.length; i++) {
@@ -70,6 +74,7 @@ window.onload = function () {
     );
     week.push([dayNum, i]);
   }
+  console.log(week);
   return week;
 };
 
@@ -317,6 +322,7 @@ let buttonday = document.getElementsByClassName("day-button");
 for (let i = 0; i < buttonday.length; i++) {
   buttonday[i].addEventListener("click", function () {
     const dayKey = selectedDay();
+    console.log(dayKey);
     renderTasksForDay(dayKey);
   });
 }
