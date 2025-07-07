@@ -54,8 +54,12 @@ window.onload = function () {
   }
   let count = 1;
   for (let i = note + 1; i < buttonday.length; i++) {
+    let prevDate = new Date(day);
+    prevDate.setDate(day.getDate() + count);
+    let calculatedDay = prevDate.getDate();
     buttonday[i].getElementsByClassName("day-number")[0].innerText =
-      day.getDate() + count;
+      calculatedDay;
+    console.log(calculatedDay);
     count++;
   }
   for (let i = note - 1; i >= 0; i--) {
