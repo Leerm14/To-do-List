@@ -139,14 +139,14 @@
 .MyTask {
   grid-area: MyTask;
   background-color: #fff;
-  margin: 0px 20px 20px 20px;
+  margin: 0px 8px 8px 8px;
   border-radius: 50px;
-  padding: 20px;
+  padding: 10px 20px;
 }
 .MyTask {
   display: grid;
   grid-template-columns: 1.5fr 0.5fr;
-  grid-template-rows: 0.5fr 2.1fr 0.4fr;
+  grid-template-rows: 0.5fr 2.2fr 0.3fr;
   gap: 0px 20px;
   grid-template-areas:
     "title note"
@@ -539,33 +539,4 @@
 .cancel-edit:hover {
   background-color: #ffe5e5;
   border-color: #ffc9c9;
-}
-
-@media (max-width: 1200px) {
-  .search-box {
-    width: 320px;
-  }
-  .container {
-    border-radius: 18px;
-  }
-  .Header {
-    border-top-right-radius: 18px;
-    border-top-left-radius: 18px;
-    padding: 0 12px;
-  }
-  .Date {
-    margin: 8px;
-    border-radius: 18px;
-  }
-  .MyTask {
-    margin: 0px 8px 8px 8px;
-    border-radius: 18px;
-    padding: 12px;
-    gap: 0 10px;
-  }
-  .note {
-    border-top-right-radius: 18px;
-    border-bottom-right-radius: 18px;
-    padding: 10px 8px;
-  }
 }
