@@ -1,5 +1,7 @@
 function backgroundaddtask() {
   let addTaskList = document.getElementsByClassName("Addtasklist")[0];
+  const warning = document.getElementById("task-warning");
+  warning.style.display = "none";
   if (addTaskList.style.display == "none" || addTaskList.style.display == "") {
     addTaskList.style.display = "block";
   } else {

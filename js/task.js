@@ -91,7 +91,6 @@ function add() {
   const warning = document.getElementById("task-warning");
   // 0:unfinish  1:finish 2:overdue
   let status = 0;
-  warning.style.display = "none";
   if (!day || !title || !from || !to) {
     if (warning) warning.textContent = "Vui lòng điền đầy đủ thông tin!";
     warning.style.display = "block";
@@ -230,6 +229,8 @@ function renderTasksForDay(selectedDayKey) {
 function showEditTaskForm(dayKey, taskKey, task) {
   let addTaskList = document.getElementsByClassName("Addtasklist")[0];
   addTaskList.style.display = "block";
+  const warning = document.getElementById("task-warning");
+  warning.style.display = "none";
   document.getElementById("date").value = dayKey;
   document.getElementById("title").value = task.title;
   document.getElementById("from").value = task.from;
