@@ -29,10 +29,7 @@ const firebaseConfig = {
   authDomain: "to-dolist-1410.firebaseapp.com",
   databaseURL: "https://to-dolist-1410-default-rtdb.firebaseio.com",
   projectId: "to-dolist-1410",
-  storageBucket: "to-dolist-1410.firebasestorage.app",
-  messagingSenderId: "913318363010",
   appId: "1:913318363010:web:bc0e6ef4b3da3d4b3bd99b",
-  measurementId: "G-1KEGYPKTR3",
 };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -70,7 +67,11 @@ CreateACC.addEventListener("click", () => {
   }
   createUserWithEmailAndPassword(auth, email, password).catch((err) => {
     console.log("CreateACC Error:", err);
-    errorMessage.textContent = "Đăng ký thất bại";
+    if (err.code === "auth/email-already-in-use") {
+      errorMessage.textContent = "Email đã được đăng ký";
+    } else {
+      errorMessage.textContent = "Đăng ký thất bại";
+    }
     errorMessage.style.display = "block";
   });
 });
