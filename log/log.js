@@ -136,7 +136,7 @@ onAuthStateChanged(auth, (user) => {
     }
   } else {
     if (!path.endsWith("/log/log.html")) {
-      window.location.href = "/log.html";
+      window.location.href = "/log/log.html";
     }
   }
 });
